@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Structural Health Monitoring</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f3f6fa;margin:0;color:#17202a}.wrap{max-width:1100px;margin:35px auto;padding:0 18px}.hero{background:#132238;color:#fff;padding:28px;border-radius:18px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}.card{background:#fff;border-radius:16px;padding:22px;box-shadow:0 4px 18px #00000010}.sensor{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.metric{padding:15px;background:#eef3f8;border-radius:12px}.metric b{display:block;font-size:24px;margin-top:5px}.btn{background:#1565c0;color:white;border:0;padding:12px 20px;border-radius:9px;cursor:pointer}.alert{padding:13px;border-radius:10px;background:#fff3cd}.critical{background:#ffe0e0}.bar{height:12px;background:#e8edf2;border-radius:10px;overflow:hidden}.fill{height:100%;background:#1565c0}.small{color:#667085;font-size:13px}input[type=file],input[type=number]{width:100%;padding:10px;margin:8px 0 14px;box-sizing:border-box}@media(max-width:750px){.grid{grid-template-columns:1fr}.sensor{grid-template-columns:1fr}}
+</style>
+</head>
+<body><div class="wrap">
+<div class="hero"><h1>AI Structural Health Monitoring</h1><p>Image damage assessment + sensor monitoring + predictive risk engine</p></div>
+<div class="grid">
+<div class="card"><h2>Inspect Structure</h2><form method="post" action="/analyze" enctype="multipart/form-data"><label>Structural image</label><input type="file" name="file" accept="image/*" required><label>Structure age (days)</label><input type="number" name="age_days" min="0" value="365"><button class="btn">Analyze</button></form>{% if error %}<div class="alert">{{error}}</div>{% endif %}<p class="small">The included model is trained on generated visual patterns. Use a real labelled inspection dataset for deployment.</p></div>
+<div class="card"><h2>Live Sensor Snapshot</h2><div class="sensor"><div class="metric">Strain<b>{{sensor.strain}}</b></div><div class="metric">Vibration<b>{{sensor.vibration}}</b></div><div class="metric">Temperature<b>{{sensor.temperature}}°C</b></div></div><p class="small">Prototype sensor stream. Replace sensor_snapshot() with your hardware/API feed for field deployment.</p></div>
+</div>
+{% if damage %}<div class="grid"><div class="card"><h2>Damage Assessment</h2><p><b>Type:</b> {{damage.type}}</p><p><b>Confidence:</b> {{damage.confidence}}%</p><p><b>Severity:</b> {{damage.severity}}</p><p><b>Visual severity score:</b> {{damage.visual_score}} / 100</p><p><b>Edge ratio:</b> {{damage.edge_ratio}}%</p><p><b>Rust-region ratio:</b> {{damage.rust_ratio}}%</p><div class="bar"><div class="fill" style="width:{{damage.visual_score}}%"></div></div><p class="small">Analyzed: {{damage.time}}</p></div>
+<div class="card"><h2>Predicted Structural Risk</h2><p style="font-size:42px;margin:5px 0"><b>{{risk.value}}%</b></p><p><b>Risk level:</b> {{risk.level}}</p><div class="bar"><div class="fill" style="width:{{risk.value}}%"></div></div><div class="alert {% if risk.level == 'Critical' %}critical{% endif %}" style="margin-top:18px">{{risk.action}}</div></div></div>{% endif %}
+</div></body></html>
